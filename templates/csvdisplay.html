@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CSV Data</title>
+    <script src="https://cdn.tailwindcss.com"></script>    
+    <link rel="stylesheet" href="../static/table.css">
+</head>
+<body>
+    <table>
+        {{ table_html|safe }}
+      </table>
+      <a href="#" class="btn-floating" onclick="trainModel()"></a>
+</body>
+</html>
+
+
+<script>
+    function trainModel() {
+        // Get the CSV file from the file input element
+        var csvFile = document.getElementById('csv_file').files[0];
+        
+        // Create a new FormData object and append the CSV file to it
+        var formData = new FormData();
+        formData.append('csv_file', csvFile);
+        
+        // Send an HTTP POST request to the Flask server with the CSV file data
+        fetch('/train_model', {
+            method: 'POST',
+            body: formData
+        })
+        .then(response => response.json())
+        .then(data => {
+            // Do something with the response data, if necessary
+            console.log(data);
+        })
+        .catch(error => {
+            console.error(error);
+        });
+    }
+    </script>
